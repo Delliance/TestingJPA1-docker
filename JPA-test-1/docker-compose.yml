@@ -1,14 +1,32 @@
-version: "3"
+#version: "3"
+#services:
+#  #  Here it automatically makes the bridge between the two containers, so is not necessary to create it
+#  app-db:
+#    image: mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=password
+#      - MYSQL_DATABASE=myDB
+#  app:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - app-db
+# Use root/example as user/password credentials
+version: '3'
+
 services:
-  #  Here it automatically makes the bridge between the two containers, so is not necessary to create it
-  app-db:
+  db:
     image: mysql
+    container_name: myDB
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=myDB
-  app:
-    build: .
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
     ports:
-      - "8080:8080"
-    depends_on:
-      - app-db
+      - "6033:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+volumes:
+  dbdata:
